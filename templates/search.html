@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+  <h2>Search Results for "{{ query }}"</h2>
+  {% if results %}
+    <ul class="race-links">
+      {% for race in results %}
+        <li>
+          <a href="{{ url_for('race', race_key=race.track ~ '_' ~ race.race_number) }}">
+            {{ race.track }} Race {{ race.race_number }}<br>
+            <small>Distance: {{ race.distance }}</small>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No races found matching your query.</p>
+  {% endif %}
+{% endblock %}

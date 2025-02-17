@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Kelly's Calc{% endblock %}</title>
+  <!-- Google Fonts: Comic Neue (bolder weights) -->
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  {% block head %}{% endblock %}
+  <style>
+    /* Apply Comic Neue with bolder weight globally */
+    body, h1, h2, h3, h4, h5, h6, p, a, label, input, select, button {
+      font-family: 'Comic Neue', cursive;
+      font-weight: 700;
+    }
+    /* Sticky header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background-color: #3D995C;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    /* Prevent content from hiding behind header */
+    body {
+      padding-top: 70px;
+    }
+    /* Header left: logo */
+    a.logo {
+      font-size: 1.25rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: #fff;
+    }
+    a.logo:hover {
+      color: #000 !important;
+    }
+    /* Header centre: displays current race if defined */
+    .header-centre h1 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    /* Header right container */
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+    /* Race search toggle styling */
+    .race-search-toggle {
+      cursor: pointer;
+      color: #fff;
+      font-size: 1.25rem;
+      transition: color 0.3s ease;
+    }
+    .race-search-toggle:hover {
+      color: #000;
+    }
+    /* Race search box styling */
+    .race-search-box {
+      display: none;
+      position: absolute;
+      right: 120px; /* adjust so it appears to the left of the upload button */
+      top: 100%;
+      z-index: 1100;
+      width: 300px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 0.5rem;
+    }
+    .race-search-box input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    /* Upload button styling */
+    .upload-odds-btn {
+      color: #fff;
+      background-color: transparent;
+      border: 1px solid #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 1rem;
+    }
+    .upload-odds-btn:hover {
+      background-color: #fff;
+      color: #000;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-left">
+      {% block header_left %}
+        <!-- Logo always links to index if a PDF has been uploaded, otherwise to upload page -->
+        <a href="{% if model_data is defined and model_data|length > 0 %}{{ url_for('index') }}{% else %}{{ url_for('upload') }}{% endif %}" class="logo">
+          Kelly's Calc
+        </a>
+      {% endblock %}
+    </div>
+    <div class="header-centre">
+      {% block header_centre %}
+        <!-- Optional centre content; by default, nothing -->
+      {% endblock %}
+    </div>
+    <div class="header-right">
+      <!-- Race search toggle -->
+      <div id="raceSearchToggle" class="race-search-toggle">
+        {% if race is defined and race %}
+            {{ race.track }} Race {{ race.race_number }} ▼
+        {% else %}
+            Races ▼
+        {% endif %}
+      </div>    
+      <!-- Hidden search box with autocomplete -->
+      <div id="raceSearchBox" class="race-search-box">
+        <input type="text" id="raceSearchInput" class="form-control" placeholder="Search races..." list="raceSuggestions">
+        <datalist id="raceSuggestions">
+          {% for race in all_races %}
+            <option value="{{ race.track }} Race {{ race.race_number }} ({{ race.distance }})">
+          {% endfor %}
+        </datalist>
+      </div>
+      <!-- Upload Odds button -->
+      <a href="{% if model_data is defined and model_data|length > 0 %}{{ url_for('index') }}{% else %}{{ url_for('upload') }}{% endif %}" class="upload-odds-btn">
+        Upload Odds
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container my-5">
+    {% block content %}{% endblock %}
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    &copy; {{ current_year }} Kelly's Calc. All rights reserved. An Ansh Shah Production.
+  </footer>
+  
+  <!-- Bootstrap JS Bundle (Includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  {% block scripts %}
+  <script>
+    // Toggle the race search box when the toggle is clicked.
+    const raceSearchToggle = document.getElementById('raceSearchToggle');
+    const raceSearchBox = document.getElementById('raceSearchBox');
+    raceSearchToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      raceSearchBox.style.display = raceSearchBox.style.display === 'block' ? 'none' : 'block';
+    });
+    // Hide the search box when clicking outside.
+    document.addEventListener('click', function(e) {
+      if (!raceSearchToggle.contains(e.target) && !raceSearchBox.contains(e.target)) {
+        raceSearchBox.style.display = 'none';
+      }
+    });
+    // Attach datalist for autocomplete.
+    document.getElementById('raceSearchInput').setAttribute('list', 'raceSuggestions');
+  </script>
+  {% endblock %}
+</body>
+</html>

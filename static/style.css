@@ -1,0 +1,449 @@
+/* Global Styles */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f7f9f8;  /* very light gray/white background */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Minimal Header (applied on index.html for example) */
+header {
+  background-color: #3D995C;  /* New green color */
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  /* Add background image for horses and dogs */
+  background-image: url('/static/most-haps-dog.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+}
+
+header .logo {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+}
+
+header nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+header nav a {
+  color: #3D995C;
+  background-color: #fff;
+  border: 1px solid #3D995C;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+header nav a:hover {
+  background-color: #3D995C;
+  color: #fff;
+}
+
+/* Main Container */
+.container, 
+main {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Headings */
+h1, h2, h3 {
+  color: #000;
+  font-weight: 700;
+}
+
+/* Tables */
+.table {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem 1rem;
+  border-top: none;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.table thead {
+  background-color: #3D995C;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Alerts */
+.alert {
+  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Forms */
+form {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+}
+
+form label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  font-size: 0.9rem;
+}
+
+form .form-control {
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+/* Buttons */
+.btn {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  min-width: 100px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #3D995C;
+  color: #fff;
+  border: 1px solid #3D995C;
+}
+
+.btn-primary:hover {
+  background-color: #34804C;  /* Slightly darker */
+  border: 1px solid #2E6B40;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: #fff;
+  border: 1px solid #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border: 1px solid #545b62;
+}
+
+/* Links */
+a {
+  color: #3D995C;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #34804C;
+  text-decoration: underline;
+}
+
+/* Footer */
+footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 2rem;
+}
+
+/* Remove Spinner Arrows from Number Inputs */
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+/* Today's Racing Links (Index Page) */
+ul.race-links {
+  list-style: none;
+  padding: 0;
+}
+
+ul.race-links li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+ul.race-links li a {
+  display: block;
+  padding: 0.75rem 1rem;
+  background-color: #fff;
+  border: 1px solid #3D995C;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+ul.race-links li a:hover {
+  background-color: #3D995C;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  header .logo {
+    margin-bottom: 0.5rem;
+  }
+}
+
+.btn-nav {
+  color: #3D995C;
+  background-color: #fff;
+  border: 1px solid #3D995C;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-nav:hover {
+  background-color: #3D995C;
+  color: #fff;
+}
+
+ul.race-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+  margin: 1rem 0;
+}
+
+ul.race-links li {
+  background-color: #fff;
+  border: 1px solid #3D995C;
+  border-radius: 4px;
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+ul.race-links li:hover {
+  transform: translateY(-2px);
+}
+
+ul.race-links li a {
+  display: block;
+  text-decoration: none;
+  color: #3D995C;
+  font-weight: 500;
+}
+
+ul.race-links li a:hover {
+  background-color: #3D995C;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+/* Paragraphs and other text */
+p, li, label {
+  color: #000;
+}
+
+.upload-btn:hover {
+  background-color: #fff !important;
+  color: #3D995C !important;
+  border: 1px solid #3D995C !important;
+}
+
+.centered-btn {
+  display: block;
+  margin: 0 auto;
+}
+
+.header-centre {
+  margin-left: -40rem; /* adjust this value as needed */
+}
+
+/* Header container */
+.site-header {
+  background-color: #3D995C;  /* New green color */
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Logo: clickable BetCalc text */
+.site-header .logo {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* Site Header */
+.site-header {
+  background-color: #3D995C;  /* New green color */
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Logo styling */
+.site-header .logo {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.site-header .logo:hover {
+  color: #000;  /* Turns black on hover */
+}
+
+/* Header Right: contains search form and nav links */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-nav {
+  color: #3D995C;
+  background-color: #fff;
+  border: 1px solid #3D995C;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-nav:hover {
+  background-color: #3D995C;
+  color: #fff;
+}
+
+/* Center the button */
+.centered-btn {
+  display: block;
+  margin: 0 auto;
+}
+
+/* Custom hover styling for the Upload PDF button */
+.btn-primary {
+  background-color: #3D995C;
+  color: #fff;
+  border: 1px solid #3D995C;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #34804C;  /* Change to your desired hover shade */
+  color: #fff;
+  border: 1px solid #2E6B40;
+}
+
+.logo {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: #000;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff; /* No background color */
+  color: #3D995C;  /* Green text */
+  text-align: center;
+  padding: 0.25rem 0;  /* Minimal vertical padding */
+  font-size: 0.9rem;  /* Adjust font-size if needed */
+  z-index: 1000;
+}
+/* Sticky Header */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  /* Retain existing styling */
+  background-color: #3D995C;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+  
+/* Add top padding to the body or main container so that content is not hidden under the fixed header */
+body {
+  padding-top: 70px; /* Adjust based on your header height */
+}
+
+.upload-odds-btn {
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;  /* Remove underline */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 1rem;
+}
+
+.upload-odds-btn:hover {
+  background-color: #fff;
+  color: #000;
+  text-decoration: none;  /* Ensure underline is still removed on hover */
+}

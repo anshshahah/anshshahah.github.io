@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}{{ race.track }} Race {{ race.race_number }} - betCalc{% endblock %}
+{% block content %}
+  <!-- Hidden element to store race data -->
+  <div id="raceData" data-race='{{ race | tojson|safe }}' style="display:none;"></div>
+  
+  <!-- Centered Race Details Title and Info -->
+  <div style="text-align: center;">
+    <h2 style="font-size: 2rem;">Race Details</h2>
+    <hr style="width: 80%; margin: 0 auto;">
+  </div>
+  <div style="text-align: center; font-size: 1.25rem; margin-top: 1rem;">
+    <span><strong>Track:</strong> {{ race.track }}</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <span><strong>Race Number:</strong> {{ race.race_number }}</span>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <span><strong>Distance:</strong> {{ race.distance }}</span>
+  </div>
+  
+  <!-- Model Data Table -->
+  <h3>Model Data for This Race</h3>
+  {% if race.runners %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Box</th>
+          <th>Dog Name</th>
+          <th>True Odds</th>
+          <th>Profitable</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for runner in race.runners %}
+          <tr>
+            <td>{{ runner.box }}</td>
+            <td>{{ runner.name }}</td>
+            <td>{{ runner.model_odds }}</td>
+            <td>{{ runner.profitable }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No runner data available for this race.</p>
+  {% endif %}
+  
+  <hr>
+  <!-- Original Kelly Bet Calculator -->
+  <section id="kelly-bet" class="mb-5">
+    <h3>Original Kelly Bet Calculator</h3>
+    <form id="kellyBetForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="kellyFraction" class="form-label">Kelly Fraction</label>
+          <input type="number" step="0.01" class="form-control kelly-fraction" id="kellyFraction" placeholder="0 - 1" min="0" max="1" required>
+        </div>
+        <div class="col">
+          <label for="bankroll" class="form-label">Bankroll ($)</label>
+          <input type="number" step="0.01" class="form-control bankroll" id="bankroll" required>
+        </div>
+      </div>
+      <!-- Dog selection dropdown -->
+      <div class="mb-3">
+        <label for="dogSelect" class="form-label">Select Dog - True Odds</label>
+        <select id="dogSelect" class="form-select">
+          <option value="-1">Choose Dog</option>
+          {% for runner in race.runners %}
+            <option value="{{ loop.index0 }}">Box {{ runner.box }} - {{ runner.name }} (True Odds: {{ runner.model_odds }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Bookie Odds input -->
+      <div class="mb-3">
+        <label for="bookieOdds" class="form-label">Bookie Odds</label>
+        <input type="number" step="0.01" class="form-control" id="bookieOdds" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Calculate Stake</button>
+      <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+      <button type="button" id="kellyWinButton" class="btn btn-success ms-2">Win 🏆</button>
+      <button type="button" id="kellyLossButton" class="btn btn-danger ms-2">Loss 😢</button>
+    </form>
+    <div id="kellyResult" class="mt-3"></div>
+  </section>
+  
+  <!-- Betfair Back Kelly Bet Calculator -->
+  <section id="betfair-back" class="mb-5">
+    <h3>Betfair Back Kelly Bet Calculator</h3>
+    <form id="betfairBackForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="backKellyFraction" class="form-label">Kelly Fraction</label>
+          <input type="number" step="0.01" class="form-control kelly-fraction" id="backKellyFraction" placeholder="0 - 1" min="0" max="1" required>
+        </div>
+        <div class="col">
+          <label for="backBankroll" class="form-label">Bankroll ($)</label>
+          <input type="number" step="0.01" class="form-control bankroll" id="backBankroll" required>
+        </div>
+      </div>
+      <!-- Dog selection dropdown for back bet -->
+      <div class="mb-3">
+        <label for="backDogSelect" class="form-label">Select Dog - True Odds</label>
+        <select id="backDogSelect" class="form-select">
+          <option value="-1">Choose Dog</option>
+          {% for runner in race.runners %}
+            <option value="{{ loop.index0 }}">Box {{ runner.box }} - {{ runner.name }} (True Odds: {{ runner.model_odds }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Bookie Odds input for back bet -->
+      <div class="mb-3">
+        <label for="backBookieOdds" class="form-label">Bookie Odds</label>
+        <input type="number" step="0.01" class="form-control" id="backBookieOdds" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+      <button type="button" id="backWinButton" class="btn btn-success ms-2">Win 🏆</button>
+      <button type="button" id="backLossButton" class="btn btn-danger ms-2">Loss 😢</button>
+    </form>
+    <div id="betfairBackResult" class="mt-3"></div>
+  </section>
+  
+  <!-- Betfair Lay Kelly Bet Calculator -->
+  <section id="betfair-lay" class="mb-5">
+    <h3>Betfair Lay Kelly Bet Calculator</h3>
+    <form id="betfairLayForm">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="layKellyFraction" class="form-label">Kelly Fraction</label>
+          <input type="number" step="0.01" class="form-control kelly-fraction" id="layKellyFraction" placeholder="0 - 1" min="0" max="1" required>
+        </div>
+        <div class="col">
+          <label for="layBankroll" class="form-label">Bankroll ($)</label>
+          <input type="number" step="0.01" class="form-control bankroll" id="layBankroll" required>
+        </div>
+      </div>
+      <!-- Dog selection dropdown for lay bet -->
+      <div class="mb-3">
+        <label for="layDogSelect" class="form-label">Select Dog - True Odds</label>
+        <select id="layDogSelect" class="form-select">
+          <option value="-1">Choose Dog</option>
+          {% for runner in race.runners %}
+            <option value="{{ loop.index0 }}">Box {{ runner.box }} - {{ runner.name }} (True Odds: {{ runner.model_odds }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Bookie Odds input for lay bet -->
+      <div class="mb-3">
+        <label for="layBookieOdds" class="form-label">Bookie Odds</label>
+        <input type="number" step="0.01" class="form-control" id="layBookieOdds" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Calculate</button>
+      <button type="reset" class="btn btn-secondary ms-2">Reset</button>
+      <button type="button" id="layWinButton" class="btn btn-success ms-2">Win (Dog Lost) 🏆</button>
+      <button type="button" id="layLossButton" class="btn btn-danger ms-2">Loss (Dog Won) 😢</button>
+    </form>
+    <div id="betfairLayResult" class="mt-3"></div>
+  </section>
+  
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Upload PDF - betCalc{% endblock %}
+{% block content %}
+  <h2 class="text-center">Upload Today's PDF</h2>
+  <hr style="width: 80%; margin: 20px auto;">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="alert alert-info">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+  <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="pdf_file" class="form-label">Choose a PDF file:</label>
+      <input type="file" name="pdf_file" id="pdf_file" class="form-control" accept=".pdf">
+    </div>
+    <button type="submit" class="btn btn-primary centered-btn">Upload PDF</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Home - betCalc{% endblock %}
+{% block content %}
+  {% if not model_data %}
+    <h2 class="text-center">Upload Today's Odds</h2>
+    <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label for="pdf_file" class="form-label">Choose a PDF file:</label>
+        <input type="file" name="pdf_file" id="pdf_file" class="form-control" accept=".pdf">
+      </div>
+      <button type="submit" class="btn btn-primary centered-btn">Upload PDF</button>
+    </form>
+    <hr style="width: 80%; margin: 20px auto;">
+  {% else %}
+    <h2 class="text-center">Today's Races</h2>
+    <hr style="width: 80%; margin: 0 auto;">
+    <div style="margin-top: 20px;">
+      {% set sorted_data = model_data|sort(attribute='track') %}
+      {% for track, races in sorted_data|groupby('track') %}
+        <h3>{{ track }}</h3>
+        <ul class="race-links">
+          {% for race in races %}
+            <li>
+              <a href="{{ url_for('race', race_key=race.track ~ '_' ~ race.race_number) }}">
+                {{ race.track }} Race {{ race.race_number }}<br>
+                <small>Distance: {{ race.distance }}</small>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock %}
